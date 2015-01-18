@@ -16,6 +16,25 @@
 
     <import resource="mvc-view-config.xml"/>
 
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath:config.properties</value>
+            </list>
+        </property>
+        <property name="ignoreResourceNotFound" value="false" />
+        <property name="ignoreUnresolvablePlaceholders" value="false" />
+        <property name="placeholderPrefix" value="$APP{"/>
+        <property name="placeholderSuffix" value="}"/>
+    </bean>
+
+    <bean id="stringFactory" class="org.springframework.samples.petclinic.util.BeanFactory">
+        <constructor-arg value="$APP{some.factory.bean}"/>
+    </bean>
+
+    <!--If you comment the line below you can see that springFactory constructor correctly resolves the some.factory.bean property-->
+    <bean id="newString" factory-bean="$APP{some.factory.bean}" factory-method="createString"/>
+
     <!--
         - POJOs labeled with the @Controller and @Service annotations are auto-detected.
     -->
